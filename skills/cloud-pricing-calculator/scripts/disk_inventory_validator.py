@@ -48,7 +48,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Premium SSD",
         "prefix": "P",
         "size_ranges": [
-            (4, 32, "P1"),      # 4-32 GiB maps to P1
+            (0, 32, "P1"),      # 4-32 GiB maps to P1
             (32, 64, "P4"),     # 32-64 GiB maps to P4
             (64, 128, "P10"),   # 64-128 GiB maps to P10
             (128, 256, "P15"),  # 128-256 GiB maps to P15
@@ -64,7 +64,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Premium SSD",
         "prefix": "P",
         "size_ranges": [
-            (4, 32, "P1"),
+            (0, 32, "P1"),
             (32, 64, "P4"),
             (64, 128, "P10"),
             (128, 256, "P15"),
@@ -82,7 +82,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Standard SSD",
         "prefix": "E",
         "size_ranges": [
-            (4, 32, "E1"),      # Minimum billing tier
+            (0, 32, "E1"),      # Minimum billing tier
             (32, 64, "E4"),     # 32-64 GiB maps to E4
             (64, 128, "E10"),   # 64-128 GiB maps to E10
             (128, 256, "E15"),  # 128-256 GiB maps to E15
@@ -98,7 +98,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Standard SSD",
         "prefix": "E",
         "size_ranges": [
-            (4, 32, "E1"),
+            (0, 32, "E1"),
             (32, 64, "E4"),
             (64, 128, "E10"),
             (128, 256, "E15"),
@@ -116,7 +116,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Standard HDD",
         "prefix": "S",
         "size_ranges": [
-            (4, 32, "S4"),      # 4-32 GiB maps to S4
+            (0, 32, "S4"),      # 4-32 GiB maps to S4
             (32, 64, "S6"),     # 32-64 GiB maps to S6
             (64, 128, "S10"),   # 64-128 GiB maps to S10
             (128, 256, "S15"),  # 128-256 GiB maps to S15
@@ -132,7 +132,7 @@ DISK_TIER_MAPPINGS = {
         "type": "Standard HDD",
         "prefix": "S",
         "size_ranges": [
-            (4, 32, "S4"),
+            (0, 32, "S4"),
             (32, 64, "S6"),
             (64, 128, "S10"),
             (128, 256, "S15"),
@@ -223,10 +223,10 @@ def get_tier_from_size(sku_name: str, size_gb: int) -> tuple[str, str]:
     
     # Handle per-GiB pricing models (Premium v2, Ultra)
     if mapping.get("pricing_model") == "per_gib":
-        return ("Per-GiB", f"{mapping['type']} - Per GiB")
+        return ("Per-GiB", f"{mapping['type']} Provisioned Capacity")
     
     if mapping.get("pricing_model") == "per_gib_with_iops":
-        return ("Per-GiB+IOPS", f"{mapping['type']} - Base + IOPS + MBps")
+        return ("Per-GiB+IOPS", f"{mapping['type']} Provisioned Capacity")
     
     # Find the appropriate tier based on size ranges
     prefix = mapping["prefix"]

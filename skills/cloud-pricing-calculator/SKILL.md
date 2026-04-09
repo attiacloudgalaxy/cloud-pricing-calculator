@@ -180,7 +180,7 @@ curl -s "https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?cur
 curl -s "https://cloudbilling.googleapis.com/v1/services/6F81-5844-456A/skus?currencyCode=USD&pageSize=5000&key=$API_KEY" | \
   jq '[.skus[] | select(.serviceRegions[]? | contains("us-central1")) | 
       select(.description | test("N2 Instance (Core|Ram)"; "i")) | 
-      {desc: .description, units, nanos, unit: .pricingInfo[0].pricingExpression.usageUnitDescription}]'
+      {desc: .description, units: .pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.units, nanos: .pricingInfo[0].pricingExpression.tieredRates[0].unitPrice.nanos, unit: .pricingInfo[0].pricingExpression.usageUnitDescription}]'
 ```
 
 ### Azure - Get VM pricing

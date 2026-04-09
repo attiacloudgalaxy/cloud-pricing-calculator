@@ -321,8 +321,10 @@ def calculate_gcp_pricing(
     Returns:
         Tuple of (hourly_price, monthly_price, windows_hourly, windows_monthly)
     """
-    # Default to us-central1 if region not found
-    pricing = GCP_N2_PRICING.get(region, GCP_N2_PRICING["us-central1"])
+    if region not in GCP_N2_PRICING:
+        raise ValueError(f"Pricing data not available for region: {region}")
+        
+    pricing = GCP_N2_PRICING[region]
     family_pricing = pricing.get(gcp_machine.family, pricing["n2-standard"])
 
     # Calculate base price

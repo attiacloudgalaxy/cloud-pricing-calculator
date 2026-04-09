@@ -20,10 +20,24 @@ BASE_URL = "https://cloudbilling.googleapis.com/v1"
 
 def query_skus(service_id: str, api_key: str, currency: str = "USD", page_size: int = 5000) -> dict:
     """Query all SKUs for a given service."""
-    url = f"{BASE_URL}/services/{service_id}/skus?currencyCode={currency}&pageSize={page_size}&key={api_key}"
-
-    with urllib.request.urlopen(url) as response:
-        return json.loads(response.read().decode())
+    base_url = f"{BASE_URL}/services/{service_id}/skus?currencyCode={currency}&pageSize={page_size}&key={api_key}"
+    skus = []
+    page_token = ""
+    
+    while True:
+        url = base_url
+        if page_token:
+            url += f"&pageToken={page_token}"
+            
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read().decode())
+            skus.extend(data.get("skus", []))
+            
+            page_token = data.get("nextPageToken")
+            if not page_token:
+                break
+                
+    return {"skus": skus}
 
 
 def filter_skus_by_region(skus: list, region: str) -> list:

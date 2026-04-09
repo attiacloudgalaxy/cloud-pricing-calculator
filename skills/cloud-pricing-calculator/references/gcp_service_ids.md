@@ -35,14 +35,7 @@ Service IDs required for the Cloud Billing API.
 | Cloud Bigtable | `B761-A47C-2E39` | Wide-column NoSQL |
 | Memorystore | `M294-7B1C-9D52` | Managed Redis/Memcached |
 
-## Networking Services
 
-| Service Name | Service ID | Description |
-|--------------|------------|-------------|
-| VPC Network | `6F81-5844-456A` | Part of Compute Engine |
-| Cloud CDN | `CDN-9A3B-7C2D` | Content delivery network |
-| Cloud DNS | `DNS-4F8E-2A91` | Domain name service |
-| Cloud NAT | `NAT-7B3C-9E51` | Network address translation |
 
 ## API Discovery
 
