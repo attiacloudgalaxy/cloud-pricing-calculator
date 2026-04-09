@@ -43,18 +43,18 @@ For querying Azure Retail Prices API:
 | Standard HDD | LRS | "S4 Disks", "S10 Disks", etc. |
 | Standard HDD | ZRS | "S4 ZRS Disks", "S10 ZRS Disks", etc. |
 
-## Lessons from AMC Cinemas Project
+## Real-World Lessons
 
-### Real-World Disk Distribution
-From 26-disk inventory:
+### Typical Disk Distribution
+From a representative 26-disk enterprise inventory:
 - 14 Premium SSD (mix of P1, P4, P10, P15) — mostly OS disks
-- 4 Standard SSD (all E10) — CyberArk PAM/PRA VMs
-- 8 Standard HDD (S4, S10, S15) — CMDB, EndPointCentral, VMPrint
+- 4 Standard SSD (all E10) — security and PAM VMs
+- 8 Standard HDD (S4, S10, S15) — management and utility VMs
 
 ### Cost Optimization Insights
-1. **FortiGate OS disk**: Only 2 GiB — smallest possible P1 ($0.78/mo)
-2. **PAM-BROKER disks**: 127 GiB Standard SSD (E10) — NOT Premium, saving ~$12/disk/mo
-3. **sqlbackups2020**: 45.8 TiB RA-GRS — largest cost driver, flagged for retention review
+1. **NVA OS disks**: Can be as small as 2 GiB — smallest possible P1 ($0.78/mo)
+2. **Security appliance disks**: 127 GiB Standard SSD (E10) — NOT Premium, saving ~$12/disk/mo
+3. **Backup storage accounts**: Can grow to tens of TiB — largest cost driver, flag for retention review
 
 ### Common Patterns
 - OS disks: Usually 127-128 GiB (P10 or E10)

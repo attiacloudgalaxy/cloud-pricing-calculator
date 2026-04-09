@@ -53,7 +53,7 @@ Or reference directly via the Kilo Marketplace.
 
 ## Real-World Origin
 
-This skill was battle-tested during the AMC Cinemas multi-cloud DR and migration engagement (April 2026), covering Azure-to-GCP pricing validation across Germany West Central and me-central2 (Dammam) regions. It encodes hard-won lessons on nanos conversion, Windows license surcharges, SKU availability gaps, and inventory validation.
+This skill was battle-tested during real-world multi-cloud DR and migration engagements, covering Azure-to-GCP pricing validation across multiple regions including Germany West Central and me-central2 (Dammam). It encodes hard-won lessons on nanos conversion, Windows license surcharges, SKU availability gaps, and inventory validation.
 
 ## License
 

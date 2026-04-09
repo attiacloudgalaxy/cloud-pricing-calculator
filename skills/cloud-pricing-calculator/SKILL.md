@@ -1,6 +1,17 @@
 ---
 name: cloud-pricing-calculator
-description: Calculate accurate cloud infrastructure costs using GCP and Azure retail pricing APIs. Query SKUs, filter by regions/instance types, convert pricing units (units/nanos to dollars), and generate estimates. Use when user asks about cloud pricing, cost estimation, SKU lookups, GCP/Azure pricing APIs, or comparing cloud costs.
+description: >-
+  Calculate accurate cloud infrastructure costs using GCP and Azure retail pricing APIs.
+  Query SKUs, filter by regions/instance types, convert pricing units (units/nanos to dollars),
+  and generate estimates. Use when user asks about cloud pricing, cost estimation, SKU lookups,
+  GCP/Azure pricing APIs, or comparing cloud costs.
+metadata:
+  category: cloud-costing
+  author: attiacloudgalaxy
+  source:
+    repository: 'https://github.com/attiacloudgalaxy/cloud-pricing-calculator'
+    path: skills/cloud-pricing-calculator
+    license_path: LICENSE
 ---
 
 # Cloud Pricing Calculator
@@ -203,14 +214,14 @@ curl -s "https://prices.azure.com/api/retail/prices?$filter=serviceName eq 'Virt
 5. **Combine core + RAM**: Total instance cost requires both SKUs
 6. **Region codes differ**: API uses codes ("us-central1"), not names ("Iowa")
 
-## Advanced Lessons from AMC Cinemas Project (April 2026)
+## Advanced Lessons from Real-World Projects
 
 ### 10. Disk Inventory Validation (Critical)
 
 Always verify disk types from source CSVs (Premium SSD, Standard SSD, Standard HDD)
 - Azure disk SKUs: P1/P4/P10/P15/P20/P30 for Premium, E4/E10/E15/E20 for Standard SSD, S4/S10/S15/S20 for Standard HDD
 - Cross-reference disk sizes with actual CSV export — don't estimate
-- Example from AMC: FortiGate 2 GiB (P1), PAM-BROKER 127 GiB Standard SSD (E10), VMPrint-new 128 GiB HDD (S10)
+- Example: NVA OS disk 2 GiB (P1), App server 127 GiB Standard SSD (E10), Print server 128 GiB HDD (S10)
 
 ### 11. VM-to-Cloud Mapping Accuracy
 
@@ -237,7 +248,7 @@ Always verify SKU availability in target region BEFORE calculating costs
 ### 14. Storage Capacity Verification
 
 Never estimate storage — always use actual capacity exports
-- Azure Storage Account capacity often surprises (45.8 TiB sqlbackups2020 in AMC case)
+- Azure Storage Account capacity often surprises (e.g. tens of TiB in backup accounts)
 - Calculate: (capacity in TiB × 1024) × rate per GB
 - Flag oversized storage for retention policy review
 
@@ -250,15 +261,15 @@ Never estimate storage — always use actual capacity exports
 
 ### 16. Special Component Handling
 
-**FortiGate NVA**: Not ASR-replicable — requires fresh Marketplace deployment + license re-registration. Budget: $500-$2,000/mo license
-**CyberArk PAM**: Requires vendor-native replication, not ASR. Budget: $5K-$15K PS engagement
+**NVA appliances (e.g. firewalls)**: Not ASR-replicable — requires fresh Marketplace deployment + license re-registration
+**PAM/vault solutions**: May require vendor-native replication, not ASR
 **VMSS**: Cannot protect via ASR — must redeploy from ARM template in DR
 **SQL Express**: No additional license cost, but migrate strategy differs (VM-based vs Cloud SQL)
 
 ### 17. API Response Caching Strategy
 
 Azure Retail API responses should be cached with timestamp
-- Document query date in proposals: "Pricing verified via Azure Retail Prices API, April 7-8 2026"
+- Document query date in proposals: "Pricing verified via Azure Retail Prices API, [DATE]"
 - Save raw API responses for audit trail
 - GCP pricing calculator exports as backup evidence
 
@@ -294,7 +305,7 @@ Before submitting BOQ to customer:
 - [ ] Pricing API query date documented
 - [ ] 3-Year TCO formula verified (Year 1 + Year 2 + Year 3)
 - [ ] Grand totals match across all documents (proposals + workbook)
-- [ ] Special components flagged (FortiGate, CyberArk, VMSS)
+- [ ] Special components flagged (NVAs, PAM/vault, VMSS)
 - [ ] Windows license surcharge calculated (if GCP)
 - [ ] Storage retention flagged if >10 TiB
 - [ ] SKU availability verified in target region

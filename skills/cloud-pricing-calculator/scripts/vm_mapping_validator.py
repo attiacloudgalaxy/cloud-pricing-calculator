@@ -3,7 +3,7 @@
 Azure VM to GCP Machine Type Mapping Validator
 
 Validates Azure VM SKU mappings to GCP machine types and calculates pricing.
-Includes AMC project examples for reference.
+Includes example mappings for reference.
 """
 
 import argparse
@@ -126,8 +126,8 @@ GCP_N2_PRICING = {
 # Windows Server license surcharge per vCPU (hourly)
 WINDOWS_SURCHARGE_PER_VCPU = 0.046
 
-# AMC Project Examples
-AMC_EXAMPLES = [
+# Example Mappings
+EXAMPLE_MAPPINGS = [
     {
         "name": "D4lds_v5 Example (Custom Match)",
         "sku": "Standard_D4lds_v5",
@@ -446,14 +446,14 @@ def validate_vm_mapping(
     )
 
 
-def run_amc_examples():
-    """Run AMC project examples and display results."""
+def run_examples():
+    """Run example mappings and display results."""
     print("=" * 80)
-    print("AMC PROJECT VM MAPPING EXAMPLES")
+    print("VM MAPPING EXAMPLES")
     print("=" * 80)
     print()
 
-    for example in AMC_EXAMPLES:
+    for example in EXAMPLE_MAPPINGS:
         print(f"Example: {example['name']}")
         print("-" * 40)
 
@@ -529,7 +529,7 @@ Examples:
     parser.add_argument(
         "--examples",
         action="store_true",
-        help="Run AMC project examples"
+        help="Run example mappings"
     )
     parser.add_argument(
         "--output",
@@ -546,7 +546,7 @@ Examples:
     args = parser.parse_args()
 
     if args.examples:
-        run_amc_examples()
+        run_examples()
         return
 
     if not args.sku:

@@ -6,7 +6,7 @@ Validates Azure managed disk inventory against Azure Retail Prices API.
 Maps disk SKUs and sizes to pricing tiers, calculates monthly costs,
 and flags unusual configurations.
 
-AMC Project Lessons Learned:
+Real-World Lessons Learned:
 - Azure disk SKUs (Standard_LRS, Premium_LRS, etc.) don't directly map to
   pricing meter names (P1, P4, P10, E4, E10, S4, S10, etc.)
 - Size ranges determine the pricing tier, not the exact disk size
@@ -38,7 +38,7 @@ from collections import defaultdict
 BASE_URL = "https://prices.azure.com/api/retail/prices"
 
 
-# AMC Project: Disk tier mappings based on size ranges
+# Disk tier mappings based on size ranges
 # These mappings reflect how Azure bills managed disks
 # Size is in GiB, tiers are based on provisioned size boundaries
 DISK_TIER_MAPPINGS = {
@@ -145,7 +145,7 @@ DISK_TIER_MAPPINGS = {
         "product_name": "Standard HDD Managed Disks",
     },
     # Premium SSD v2: Per-GiB pricing model (different from P-series)
-    # AMC Lesson: v2 disks don't use tier-based pricing - they bill per GiB
+    # Note: v2 disks don't use tier-based pricing - they bill per GiB
     "PremiumV2_LRS": {
         "type": "Premium SSD v2",
         "prefix": "v2",
@@ -154,7 +154,7 @@ DISK_TIER_MAPPINGS = {
         "pricing_model": "per_gib",
     },
     # Ultra Disk: Per-GiB pricing with additional IOPS/MBps charges
-    # AMC Lesson: Ultra disks have complex pricing - base + IOPS + MBps
+    # Note: Ultra disks have complex pricing - base + IOPS + MBps
     "UltraSSD_LRS": {
         "type": "Ultra Disk",
         "prefix": "Ultra",
@@ -213,7 +213,7 @@ def get_tier_from_size(sku_name: str, size_gb: int) -> tuple[str, str]:
     Returns:
         Tuple of (tier_name, meter_name)
         
-    AMC Lesson: Azure bills based on tier boundaries, not exact size.
+    Note: Azure bills based on tier boundaries, not exact size.
     A 100 GiB Premium disk bills as P10 (64-128 GiB tier), not per-GiB.
     """
     mapping = DISK_TIER_MAPPINGS.get(sku_name)
@@ -248,7 +248,7 @@ def fetch_disk_price(region: str, meter_name: str, currency: str = "USD") -> Opt
     """
     Fetches disk pricing from Azure Retail Prices API.
     
-    AMC Lesson: Use isPrimaryMeterRegion=true to avoid duplicate entries.
+    Note: Use isPrimaryMeterRegion=true to avoid duplicate entries.
     The API returns multiple meter regions but we only need the primary.
     """
     # Check cache first
@@ -257,7 +257,7 @@ def fetch_disk_price(region: str, meter_name: str, currency: str = "USD") -> Opt
         return cached
     
     # Build OData filter for disk pricing
-    # AMC Lesson: meterName is the key field for disk pricing lookup
+    # Note: meterName is the key field for disk pricing lookup
     filter_parts = [
         "serviceName eq 'Storage'",
         f"armRegionName eq '{region}'",
@@ -301,7 +301,7 @@ def calculate_monthly_cost(disk: DiskInfo, price_data: Optional[dict]) -> float:
     """
     Calculates monthly cost based on pricing data.
     
-    AMC Lesson: Disk pricing is per disk/month, not hourly.
+    Note: Disk pricing is per disk/month, not hourly.
     Unit of measure is typically "1/Month" for tiered disks.
     """
     if not price_data:
@@ -328,7 +328,7 @@ def check_unusual_config(disk: DiskInfo) -> list[str]:
     """
     Flags disk configurations that may be unusual or worth reviewing.
     
-    AMC Lesson: Common optimization opportunities in disk inventory:
+    Common optimization opportunities in disk inventory:
     - Oversized disks (using P20 when P10 would suffice)
     - Unattached disks still incurring charges
     - Premium disks for non-production workloads
